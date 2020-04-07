@@ -1,0 +1,21 @@
+# Compiled class file
+*.class
+
+# Intellij #
+.idea/*
+
+# folders #
+target/*
+out/*
+src/test/*
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
