@@ -19,7 +19,7 @@ public interface UserService {
 
     void editUser(User user);
 
-    void deleteUser(User user);
+    void deleteUser(Long id);
 
     List<Role> getAllRoles();
 
