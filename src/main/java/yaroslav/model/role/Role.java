@@ -1,14 +1,31 @@
 package yaroslav.model.role;
 
+import org.springframework.security.core.GrantedAuthority;
 import yaroslav.model.User;
 
+import javax.persistence.*;
 import java.util.Set;
 
-public class Role {
+@Entity
+@Table(name = "t_roles")
+public class Role implements GrantedAuthority {
 
+    @Id
     private Long id;
+
     private String roleName;
+
+    @Transient
+    @ManyToMany(mappedBy = "roles")
     private Set<User> users;
+
+    public Role() {
+    }
+
+    public Role(Long id, String roleName) {
+        this.id = id;
+        this.roleName = roleName;
+    }
 
     public Long getId() {
         return id;
@@ -32,5 +49,10 @@ public class Role {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public String getAuthority() {
+        return getRoleName();
     }
 }

@@ -1,15 +1,31 @@
 package yaroslav.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import yaroslav.model.role.Role;
 
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
-public class User {
+@Entity
+@Table(name = "t_users")
+public class User implements UserDetails {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String username;
+
     private String password;
+
+    @Transient
+    private String passwordConfirm;
+
     private String email;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     public Long getId() {
@@ -24,8 +40,33 @@ public class User {
         return username;
     }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
     }
 
     public String getPassword() {
@@ -38,7 +79,7 @@ public class User {
 
     public String getEmail() {
         return email;
-}
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -50,5 +91,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 }
