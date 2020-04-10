@@ -11,7 +11,7 @@
 <br>Пароль - ${user.password}
 <br>Права -
 <c:forEach var="roles" items="${user.roles}">
-    ${roles.name}<br>
+    ${roles.roleName}<br>
 </c:forEach>
 
 <br>

@@ -23,7 +23,7 @@
     <input type="text" name="password" value="${userEditing.password}">
     <br>
 
-    <tf:checkboxes path="roles" items="${rolelist}" element="li" itemValue="name" itemLabel="name"/>
+    <tf:checkboxes path="roles" items="${rolelist}" element="li" itemValue="roleName" itemLabel="roleName"/>
 
     <br>
     <input type="submit" value="Изменить">
