@@ -2,7 +2,10 @@ package yaroslav.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import yaroslav.model.User;
 import yaroslav.model.role.Role;
@@ -22,7 +25,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
-    public ModelAndView allUsers(){
+    public ModelAndView allUsers() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/admin/adminUsers");
         modelAndView.addObject("users", userService.getAllUsers());
@@ -30,29 +33,29 @@ public class AdminController {
     }
 
     @GetMapping("/admin/add")
-    public ModelAndView addPage(){
+    public ModelAndView addPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/admin/addUser");
         return modelAndView;
     }
 
     @PostMapping("/admin/add")
-    public ModelAndView addUser(@ModelAttribute("user") User user){
+    public ModelAndView addUser(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
 
-        if (!userService.userIsExist(user)){
+        if (!userService.userIsExist(user)) {
             modelAndView.setViewName("redirect:/admin");
             userService.addUser(user);
             return modelAndView;
         }
 
         modelAndView.addObject("message", "Имя занято");
-        modelAndView.setViewName("redirect:/admin/addUser");
+        modelAndView.setViewName("/admin/addUser");
         return modelAndView;
     }
 
-    @GetMapping("/admin/editUser/{id}")
-    public ModelAndView editPage(@PathVariable("id") Long id){
+    @GetMapping("/admin/editUser")
+    public ModelAndView editPage(@RequestParam("id") Long id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/admin/editUser");
         modelAndView.addObject("userEditing", userService.getUserById(id));
@@ -67,7 +70,7 @@ public class AdminController {
             @ModelAttribute("password") String password,
             @ModelAttribute("email") String email,
             @RequestParam("roles") String[] roles
-    ){
+    ) {
         User user = userService.getUserById(id);
         user.setUsername(username);
         user.setPassword(password);
@@ -75,10 +78,10 @@ public class AdminController {
         Set<Role> rolesNew = new HashSet<>();
 
         for (String role : roles) {
-            if (role.equals("ROLE_ADMIN")){
-                rolesNew.add(new Role(2L,"ROLE_ADMIN"));
+            if (role.equals("2")) {
+                rolesNew.add(new Role(2L, "ROLE_ADMIN"));
             }
-            if (role.equals("ROLE_USER")){
+            if (role.equals("1")) {
                 rolesNew.add(new Role(1L, "ROLE_USER"));
             }
         }
@@ -86,7 +89,7 @@ public class AdminController {
         user.setRoles(rolesNew);
 
         ModelAndView modelAndView = new ModelAndView();
-        if (!userService.getUserByUsername(username).getId().equals(id) && userService.userIsExist(user)){
+        if (!userService.getUserByUsername(username).getId().equals(id) && userService.userIsExist(user)) {
             modelAndView.addObject("message", "Имя занято");
             modelAndView.setViewName("/admin/editUser");
             return modelAndView;
@@ -97,16 +100,16 @@ public class AdminController {
         return modelAndView;
     }
 
-    @PostMapping("/admin/deleteUser/{id}")
-    public ModelAndView deletePage(@PathVariable("id") Long id){
+    @PostMapping("/admin/deleteUser")
+    public ModelAndView deletePage(@RequestParam("id") Long id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/admin/deleteUser");
         modelAndView.addObject("user", userService.getUserById(id));
         return modelAndView;
     }
 
-    @GetMapping("/admin/deleteUser/{id}")
-    public ModelAndView deleteUser(@PathVariable("id") Long id){
+    @GetMapping("/admin/deleteUser")
+    public ModelAndView deleteUser(@RequestParam("id") Long id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/admin");
         userService.deleteUser(id);

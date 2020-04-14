@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin panel</title>
+</head>
+<body>
+<h2>Users</h2>
+
+<table border="2">
+    <tr>
+        <th>id</th>
+        <th>Имя</th>
+        <th>Пароль</th>
+        <th>Права</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.password}"></td>
+        <td>
+            <div th:each="role : ${user.roles}">
+                <span th:inline="text">[[${role.roleName}]]</span><br>
+            </div>
+        </td>
+        <td>
+            <form action="admin/editUser" method="get">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <input type="submit" value="Редактировать" style="float: left"/>
+            </form>
+            <form action="admin/deleteUser" method="post">
+                <input type="hidden" name="id" th:value="${user.id}"/>
+                <input type="submit" value="Удалить" style="float: left"/>
+            </form>
+        </td>
+    </tr>
+</table>
+<br>
+<form action="admin/add" method="get">
+    <input type="submit" value="Добавить пользователя"/>
+</form>
+<br>
+<div th:insert="fragments/buttons_back.html :: buttons_back"></div>
+<br>
+<div th:insert="fragments/logout.html :: logout"></div>
+
+</body>
+</html>

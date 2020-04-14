@@ -28,22 +28,22 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public ModelAndView registerNewUser(@ModelAttribute("user") User user, BindingResult bindingResult){
+    public ModelAndView registerNewUser(@ModelAttribute("user") User user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registration");
             modelAndView.addObject("message", "Ошибка заполнения формы");
             return modelAndView;
         }
 
-        if(!user.getPassword().equals(user.getPasswordConfirm())){
+        if (!user.getPassword().equals(user.getPasswordConfirm())) {
             modelAndView.setViewName("registration");
             modelAndView.addObject("message", "Пароли не совпадают");
             return modelAndView;
         }
 
-        if (!userService.addUser(user)){
+        if (!userService.addUser(user)) {
             modelAndView.setViewName("registration");
             modelAndView.addObject("message", "Пользователь с таким именем уже существует");
             return modelAndView;

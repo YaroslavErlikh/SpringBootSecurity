@@ -1,12 +1,14 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Редактировать профиль</title>
 </head>
 <body>
 
 <h2>Редактировать профиль</h2>
-${message}
+<p th:text="${message}"></p>
 <form action="/user/editProfileFine" method="post">
     <input type="text" name="username">
     <br>
@@ -15,8 +17,8 @@ ${message}
     <input type="submit" name="Изменить" value="Изменить">
 </form>
 <br>
-<jsp:include page="../butons_back.jsp"/>
+<div th:insert="fragments/buttons_back.html :: buttons_back"></div>
 <br>
-<jsp:include page="../logout.jsp"/>
+<div th:insert="fragments/logout.html :: logout"></div>
 </body>
 </html>

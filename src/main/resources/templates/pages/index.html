@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+</head>
+<body>
+<div>
+
+    <div sec:authorize="isAuthenticated()">
+        <h3 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!
+        </h3>
+    </div>
+
+    <div sec:authorize="!isAuthenticated()">
+        <form action="/login" method="get">
+            <input type="submit" value="Войти">
+        </form>
+        <form action="/registration" method="get">
+            <input type="submit" value="Регистрация">
+        </form>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <form action="/user/profile" method="get">
+            <input type="submit" value="Профиль">
+        </form>
+        <br>
+        <div th:insert="fragments/logout.html :: logout"></div>
+    </div>
+</div>
+</body>
+</html>

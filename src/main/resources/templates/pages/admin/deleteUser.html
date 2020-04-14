@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete user</title>
+</head>
+<body>
+<h3>Удалить пользователя - </h3>
+<p th:text="'id - ' + ${user.id}"></p>
+<p th:text="'Имя - ' + ${user.username}"></p>
+<p th:text="'Пароль - ' + ${user.password}"></p>
+<br>Права -
+<div th:each="role : ${user.roles}">
+    <span th:text="${role.roleName}"></span><br>
+</div>
+
+<br>
+Вы уверены?
+<form action="/admin/deleteUser" method="get">
+    <input type="hidden" name="id" th:value="${user.id}">
+    <input type="submit" value="Удалить">
+</form>
+
+<br>
+<div th:insert="fragments/buttons_back.html :: buttons_back"></div>
+<br>
+<div th:insert="fragments/logout.html :: logout"></div>
+
+</body>
+</html>

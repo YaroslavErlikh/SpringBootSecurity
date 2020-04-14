@@ -2,10 +2,11 @@
 
 CRUD-application<br>
 Maven<br>
+Spring-boot<br>
 Spring-MVC<br>
 Spring-Security<br>
 Hibernate 5<br>
 JPA Reposotpries<br>
-JSTL<br>
+Thymeleaf<br>
 MySQL Server 8<br>
 TomCat 9

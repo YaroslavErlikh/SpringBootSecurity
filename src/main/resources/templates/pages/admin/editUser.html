@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Edit user</title>
+</head>
+<body>
+<h3 sec:authentication="principal.username"></h3>
+<br>
+<h4 th:text="${'Editing user - ' + userEditing.id}"></h4>
+
+<form action="/admin/edit" method="post" th:object="${userEditing}">
+
+    <input type="hidden" name="id" th:value="${userEditing.id}">
+
+    Имя:
+    <input type="text" name="username" th:value="${userEditing.username}">
+    <p th:text="${message}"></p>
+    <br>
+    Пароль:
+    <input type="text" name="password" th:value="${userEditing.password}">
+    <br>
+
+    <ul>
+        <li th:each="role : ${rolelist}">
+            <input type="checkbox" name="roles" th:field="*{roles}" th:value="${role.getId()}"
+                   th:text="${role.getRoleName()}"/>
+        </li>
+    </ul>
+
+    <br>
+    <input type="submit" value="Изменить">
+</form>
+<br>
+<div th:insert="fragments/buttons_back.html :: buttons_back"></div>
+<br>
+<div th:insert="fragments/logout.html :: logout"></div>
+</body>
+</html>

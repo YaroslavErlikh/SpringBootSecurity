@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<form action="login" method="post">
+    Имя: <input type="text" name="username" placeholder="Имя" required> <br>
+    Пароль: <input type="text" name="password" placeholder="Пароль" required><br>
+    <input type="submit" value="Авторизация">
+</form>
+<br>
+
+<br>
+<div th:insert="fragments/buttons_back.html :: buttons_back"></div>
+</body>
+</html>
