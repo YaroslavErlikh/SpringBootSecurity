@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+<head th:replace="layouts/layout.html :: head">
     <title>Login</title>
 </head>
 <body>
-<form action="login" method="post">
-    Имя: <input type="text" name="username" placeholder="Имя" required> <br>
-    Пароль: <input type="text" name="password" placeholder="Пароль" required><br>
-    <input type="submit" value="Авторизация">
-</form>
-<br>
+<div th:replace="layouts/layout.html :: header"></div>
+<div class="container text-center">
 
-<br>
-<div th:insert="fragments/buttons_back.html :: buttons_back"></div>
+        <form action="login" method="post">
+            <div class="row mb-2 justify-content-center">
+                <input type="text" class="form-control col-4" name="username" placeholder="Имя" required>
+            </div>
+            <div class="row mb-3 justify-content-center">
+                <input type="password" class="form-control col-4" name="password" placeholder="Пароль" required>
+            </div>
+            <button class="btn btn-lg btn-primary col-4" type="submit">Войти</button>
+        </form>
+</div>
+<footer th:replace="layouts/layout.html :: footer"></footer>
 </body>
 </html>

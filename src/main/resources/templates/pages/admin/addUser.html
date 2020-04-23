@@ -1,23 +1,69 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layouts/layout.html :: head">
     <title>Add new user</title>
 </head>
 <body>
-<form action="/admin/add" method="post">
-    <label for="name">Имя:</label>
-    <input type="text" name="username" id="name" required>
-    <br>
-    <label for="pass">Пароль:</label>
-    <input type="text" name="password" id="pass" required>
-    <br>
-    <input type="submit" value="Добавить">
-</form>
-<br>
-<div th:insert="fragments/buttons_back.html :: buttons_back"></div>
-<br>
-<div th:insert="fragments/logout.html :: logout"></div>
+<div th:replace="layouts/layout.html :: header"></div>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin">
+                            <span data-feather="home"></span>
+                            Admin panel<span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link active" href="/user/profile">Профиль</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h2>Add new user</h2>
+            </div>
+
+            <div>
+                <nav class="navbar navbar-expand-md navbar-light position-sticky bg-transparent">
+                    <div class="navbar navbar-collapse">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <form action="/admin" method="get">
+                                    <button class="btn btn-link bg-transparent">
+                                        User table
+                                    </button>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                    <span class="btn btn-outline-success btn-link">
+                                    Add user
+                                        </span>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="col-md-8 order-md-1">
+                    <div class="col-md-6 mb-3">
+                        <form action="/admin/add" method="post">
+                            <input class="form-control mb-2" type="text" name="username" placeholder="Имя" required>
+                            <input class="form-control mb-3" type="text" name="password" placeholder="Пароль" required>
+                            <button class="btn btn-success" type="submit">Добавить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<footer th:replace="layouts/layout.html :: footer"></footer>
 </body>
 </html>

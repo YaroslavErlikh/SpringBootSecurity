@@ -3,31 +3,54 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
-<head>
-    <meta charset="UTF-8">
+<head th:replace="layouts/layout.html :: head">
     <title>Профиль</title>
 </head>
 <body>
-<p th:text="${'ID: ' + user.id}"></p>
-<p th:text="${'Имя: ' + user.username}"></p>
-
-<form action="/user/editProfile" method="get">
-    <input type="submit" value="Редактировать">
-</form>
-<br>
-<form action="/user/deleteProfile" method="get">
-    <input type="submit" value="Удалить"/>
-</form>
-<br>
-<div sec:authorize="hasAnyRole('ROLE_ADMIN')">
-    <form action="/admin" method="get">
-        <input type="submit" value="Пользователи"/>
-    </form>
+<div th:replace="layouts/layout.html :: header"></div>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                        <a class="nav-link active" href="/admin">Admin panel</a>
+                    </li>
+                    <li class="nav-item">
+                        <span class="btn btn-outline-success btn-link">Профиль</span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h2>Profile</h2>
+            </div>
+            <div class="row justify-content-center mb-5">
+                <div class="col-4 bg-info">
+                    <div class="row mb-2 justify-content-center">
+                        <h5 th:text="${'ID: ' + user.id}"></h5>
+                    </div>
+                    <div class="row justify-content-center">
+                        <h5 th:text="${'Имя: ' + user.username}"></h5>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="mb-3">
+                    <form action="/user/editProfile" method="get">
+                        <button class="btn btn-primary btn-lg col-4" type="submit">Редактировать</button>
+                    </form>
+                </div>
+                <div class="mb-3">
+                    <form action="/user/deleteProfile" method="get">
+                        <button class="btn btn-lg btn-danger col-4 mb-5" type="submit">Удалить профиль</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
 </div>
-
-<br>
-<div th:insert="fragments/buttons_back.html :: buttons_back"></div>
-<br>
-<div th:insert="fragments/logout.html :: logout"></div>
+<footer th:replace="layouts/layout.html :: footer"></footer>
 </body>
 </html>
