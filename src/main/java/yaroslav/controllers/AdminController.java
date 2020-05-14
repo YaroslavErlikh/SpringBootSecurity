@@ -1,17 +1,17 @@
 package yaroslav.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import yaroslav.model.User;
 import yaroslav.model.role.Role;
 import yaroslav.service.interfaces.UserService;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -24,47 +24,38 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping("/admin")
-    public ModelAndView allUsers() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/admin/adminUsers");
-        modelAndView.addObject("users", userService.getAllUsers());
-        return modelAndView;
+    @GetMapping("/admin/getUsers")
+    public ResponseEntity<List<User>> getUsers(){
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @GetMapping("/admin/add")
-    public ModelAndView addPage() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/admin/addUser");
-        return modelAndView;
+    @GetMapping("/admin/getUserEdit/{id}")
+    public ResponseEntity<User> getUsers(@PathVariable("id") Long id){
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @GetMapping("/admin/getAllRoles")
+    public ResponseEntity<List<Role>> getAllRoles(){
+        return ResponseEntity.ok(userService.getAllRoles());
     }
 
     @PostMapping("/admin/add")
-    public ModelAndView addUser(@ModelAttribute("user") User user) {
+    public ResponseEntity<Void> addUser(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
 
         if (!userService.userIsExist(user)) {
             modelAndView.setViewName("redirect:/admin");
             userService.addUser(user);
-            return modelAndView;
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         modelAndView.addObject("message", "Имя занято");
         modelAndView.setViewName("/admin/addUser");
-        return modelAndView;
-    }
-
-    @GetMapping("/admin/editUser")
-    public ModelAndView editPage(@RequestParam("id") Long id) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/admin/editUser");
-        modelAndView.addObject("userEditing", userService.getUserById(id));
-        modelAndView.addObject("rolelist", userService.getAllRoles());
-        return modelAndView;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/admin/edit")
-    public ModelAndView editUser(
+    public ResponseEntity<Void> editUser(
             @ModelAttribute("id") Long id,
             @ModelAttribute("username") String username,
             @ModelAttribute("password") String password,
@@ -92,27 +83,19 @@ public class AdminController {
         if (!userService.getUserByUsername(username).getId().equals(id) && userService.userIsExist(user)) {
             modelAndView.addObject("message", "Имя занято");
             modelAndView.setViewName("/admin/editUser");
-            return modelAndView;
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         modelAndView.setViewName("redirect:/admin");
         userService.editUser(user);
-        return modelAndView;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/admin/deleteUser")
-    public ModelAndView deletePage(@RequestParam("id") Long id) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/admin/deleteUser");
-        modelAndView.addObject("user", userService.getUserById(id));
-        return modelAndView;
-    }
-
-    @GetMapping("/admin/deleteUser")
-    public ModelAndView deleteUser(@RequestParam("id") Long id) {
+    @DeleteMapping("/admin/delete/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/admin");
         userService.deleteUser(id);
-        return modelAndView;
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
